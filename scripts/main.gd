@@ -1,5 +1,9 @@
 extends Node2D
 
+var game_duration = 10
+var game_active = false
+var round_timer = 0
+
 @export var sheet_scene: PackedScene
 @export var screen_width: float = 1280
 @export var screen_height: float = 720
@@ -17,6 +21,8 @@ var scrapped_sheets = []
 var ok_timestamps = []
 var ng_timestamps = []
 
+var sample_seconds = 10
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Dynamically calculate sheet spacing
@@ -28,13 +34,73 @@ func _ready() -> void:
 	
 	# Set the timer interval
 	var spawn_interval = sheet_spacing / sheet_speed
-	$Timer.wait_time = spawn_interval
-	$Timer.start()
+	$GameLayer/SheetSpawnTimer.wait_time = spawn_interval
+	
+	show_start_screen()
+
+func show_start_screen():
+	$StartScreen.visible = true
+	$EndScreen.visible = false
+	$GameLayer.visible = true
+	$GameLayer/CanvasLayer.visible = false
+	$GameLayer/Operator.visible = false
+	
+func start_game():
+	$StartScreen.visible = false
+	$EndScreen.visible = false
+	$GameLayer/CanvasLayer.visible = true
+	$GameLayer/Operator.visible = true
+	game_active = true
+	round_timer = game_duration
+	$GameLayer/RoundTimerLabel.text = str(game_duration)
+	$GameLayer/SheetSpawnTimer.start()
+	$GameLayer/RoundTimer.start()
+
+func end_game():
+	print("game ended")
+	for s in pancake:
+		s.visible = false
+		
+	show_end_screen()
+	
+func show_end_screen():
+	$GameLayer/CanvasLayer.visible = false
+	$GameLayer/Operator.visible = false
+	$EndScreen.visible = true
+	$EndScreen/FinalScoreLabel.text = "Final Score:\nYield: %d%%\nPPM: %d" % [calculate_yield(), calculate_ppm()]
+	game_active = false
+
+func restart_game():
+	reset_game_state()
+	start_game()
+	
+func reset_game_state():
+	ok_timestamps.clear()
+	ng_timestamps.clear()
+	round_timer = game_duration
+	$GameLayer/RoundTimer.stop()
+	$GameLayer/SheetSpawnTimer.stop()
+	
+	for sheet in pancake + scrapped_sheets + stacked_sheets:
+		sheet.queue_free()
+	pancake.clear()
+	scrapped_sheets.clear()
+	stacked_sheets.clear()
+
+func _on_Round_Timer_timeout():
+	round_timer -= 1
+	$GameLayer/RoundTimerLabel.text = str(round_timer)
+	
+	if round_timer <= 0:
+		$GameLayer/RoundTimer.stop()
+		$GameLayer/SheetSpawnTimer.stop()
+		end_game()
+	
 
 func set_score(yield_, ppm):
 	pass
 	
-func _on_Timer_timeout():
+func _on_SheetSpawnTimer_timeout():
 	spawn_sheet()
 	
 func spawn_sheet():
@@ -79,7 +145,7 @@ func flush_stacked_sheets():
 		tmp_sheet.queue_free()
 	
 func _on_ok_cut_detected(triggered_sheet):
-	$Operator.play_cutting_animation()
+	$GameLayer/Operator.play_cutting_animation()
 	
 	if pancake[0] == triggered_sheet:
 		stack_sheet(pancake[0])
@@ -88,12 +154,15 @@ func _on_ok_cut_detected(triggered_sheet):
 	scrap_sheets_until(triggered_sheet)
 
 func _on_ng_cut_detected(triggered_sheet):
-	$Operator.play_cutting_animation()
+	$GameLayer/Operator.play_cutting_animation()
 	scrap_sheets_until(triggered_sheet)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # Handle resetting sheets when reaching the right screen boundary
 func _process(delta: float) -> void:
+	if not game_active:
+		return
+		
 	update_scores()
 	
 	# Remove sheets that move off-screen to the right
@@ -113,27 +182,41 @@ func remove_sheet(s):
 	pancake.erase(s)
 	s.queue_free()
 
+func calculate_yield():
+	var yield_pct = 0.0
+	
+	var ok_count = len(ok_timestamps)
+	var ng_count = len(ng_timestamps)
+	if ok_count + ng_count > 0:
+		yield_pct = float(ok_count) / (ok_count + ng_count) * 100
+	
+	return yield_pct
+
+func calculate_ppm():
+	var ok_count = len(ok_timestamps)
+	return ok_count * 60 / sample_seconds / stack_capacity
+		
 func update_scores():
 	var current_time = Time.get_ticks_msec()
-	
-	var sample_seconds = 10
 	
 	ok_timestamps = ok_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
 	ng_timestamps = ng_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
 	
-	var yield_pct = 0.0
+	var yield_pct = calculate_yield()
+	var ppm = calculate_ppm()
 	
-	var oks = len(ok_timestamps)
-	var ngs = len(ng_timestamps)
-	if oks + ngs > 0:
-		yield_pct = float(oks) / (oks + ngs) * 100
-	
-	var ppm = 0
-	ppm = oks * 60 / sample_seconds / stack_capacity
-	
-	$CanvasLayer/ScoreLabel.text = "Yield: %d%%\nPPM: %d" % [yield_pct, ppm]
+	$GameLayer/CanvasLayer/ScoreLabel.text = "Yield: %d%%\nPPM: %d" % [yield_pct, ppm]
 	
 # Debug
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		print("Mouse clicked at: ", event.position)
+
+
+func _on_start_button_pressed() -> void:
+	start_game()
+
+
+func _on_restart_button_pressed() -> void:
+	reset_game_state()
+	start_game()
