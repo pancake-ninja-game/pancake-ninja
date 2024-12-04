@@ -27,11 +27,20 @@ func _on_Timer_timeout():
 func spawn_sheet():
 	var s = sheet_scene.instantiate()
 	s.position = Vector2(-sheet_spacing, 100)
-	s.connect("sheet_fall_triggered", Callable(self, "_on_sheet_fall_triggered"))
+	s.connect("ok_cut_detected", Callable(self, "_on_ok_cut_detected"))
+	s.connect("ng_cut_detected", Callable(self, "_on_ng_cut_detected"))
 	add_child(s)
 	sheets.append(s)
 
-func _on_sheet_fall_triggered(triggered_sheet):
+func _on_ok_cut_detected(triggered_sheet):
+	print("ok cut")
+	drop_sheets(triggered_sheet)
+
+func _on_ng_cut_detected(triggered_sheet):
+	print("ng cut")
+	drop_sheets(triggered_sheet)
+	
+func drop_sheets(triggered_sheet):
 	for s in sheets:
 		s.trigger_fall()
 		
