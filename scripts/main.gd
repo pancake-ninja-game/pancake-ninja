@@ -1,8 +1,10 @@
 extends Node2D
 
 @export var sheet_scene: PackedScene
-@export var screen_width: float = 1024
-@export var screen_height: float = 300
+@export var screen_width: float = 1280
+@export var screen_height: float = 720
+
+var pancake_y_pos = 370
 
 var sheet_spacing: float = 0
 var sheet_speed: float = 200
@@ -30,7 +32,7 @@ func _on_Timer_timeout():
 	
 func spawn_sheet():
 	var s = sheet_scene.instantiate()
-	s.position = Vector2(-sheet_spacing, 100)
+	s.position = Vector2(-sheet_spacing, pancake_y_pos)
 	s.connect("ok_cut_detected", Callable(self, "_on_ok_cut_detected"))
 	s.connect("ng_cut_detected", Callable(self, "_on_ng_cut_detected"))
 	add_child(s)

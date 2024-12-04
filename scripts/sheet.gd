@@ -23,7 +23,7 @@ var mouse_positions = []
 var cut_zone: float = 0.3
 
 var is_stacked = false
-static var jr_pos: Vector2 = Vector2(800, 600)
+static var jr_pos: Vector2 = Vector2(1100, 600)
 static var jr_height: float = 0
 var target_pos: Vector2
 
