@@ -22,7 +22,7 @@ func _ready() -> void:
 	# Dynamically calculate sheet spacing
 	var tmp_sheet = sheet_scene.instantiate()
 	add_child(tmp_sheet)
-	sheet_spacing = tmp_sheet.sheet_width + 10
+	sheet_spacing = tmp_sheet.sheet_width - 1
 	sheet_speed = tmp_sheet.move_speed
 	tmp_sheet.queue_free()
 	
