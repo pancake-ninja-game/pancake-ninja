@@ -34,11 +34,23 @@ func spawn_sheet():
 
 func _on_ok_cut_detected(triggered_sheet):
 	print("ok cut")
-	drop_sheets(triggered_sheet)
+	var i = 0
+	for s in sheets:
+		i += 1
+		if s == triggered_sheet:
+			s.stack_in_jr()
+			sheets = sheets.slice(i)
+			break
+			
+		s.trigger_fall()
 
 func _on_ng_cut_detected(triggered_sheet):
 	print("ng cut")
-	drop_sheets(triggered_sheet)
+	for s in sheets:
+		s.trigger_fall()
+		
+		if s == triggered_sheet:
+			return
 	
 func drop_sheets(triggered_sheet):
 	for s in sheets:
