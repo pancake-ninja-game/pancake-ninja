@@ -12,7 +12,7 @@ var sheet_width: float = 0
 
 var sheet_height_in_jr: float = 5
 
-var is_falling = false
+var is_scrapped = false
 var fall_speed = 0
 var rotation_direction: float = 0
 var skew_direction: float = 0
@@ -20,7 +20,7 @@ var skew_direction: float = 0
 var is_hovering = false
 var mouse_positions = []
 
-var cut_zone: float = 0.1
+var cut_zone: float = 0.3
 
 var is_stacked = false
 static var jr_pos: Vector2 = Vector2(800, 600)
@@ -44,7 +44,7 @@ func _ready():
 func _process(delta):
 	position.x += move_speed * delta
 	
-	if is_falling:
+	if is_scrapped:
 		fall_speed += gravity * delta
 		position.y += fall_speed * delta
 		
@@ -61,18 +61,18 @@ func _process(delta):
 		mouse_positions.append(pos_x)
 		return
 
-func trigger_fall():
-	is_falling = true
+func scrap():
+	is_scrapped = true
 
 func _on_mouse_entered():
-	if is_falling or is_stacked:
+	if is_stacked or is_scrapped:
 		return
 		
 	is_hovering = true
 	mouse_positions.clear()
 
 func _on_mouse_exited():
-	if is_falling or is_stacked:
+	if is_stacked or is_scrapped:
 		return
 		
 	is_hovering = false
@@ -86,7 +86,7 @@ func evaluate_cut():
 		if pos < left_boundary or pos > right_boundary:
 			emit_signal("ng_cut_detected", self)
 			return
-		
+	
 	emit_signal("ok_cut_detected", self)
 
 func stack_in_jr():

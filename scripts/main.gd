@@ -2,10 +2,14 @@ extends Node2D
 
 @export var sheet_scene: PackedScene
 @export var screen_width: float = 1024
+@export var screen_height: float = 300
 
 var sheet_spacing: float = 0
 var sheet_speed: float = 200
-var sheets = []
+
+var pancake = []
+var stacked_sheets = []
+var scrapped_sheets = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,45 +34,50 @@ func spawn_sheet():
 	s.connect("ok_cut_detected", Callable(self, "_on_ok_cut_detected"))
 	s.connect("ng_cut_detected", Callable(self, "_on_ng_cut_detected"))
 	add_child(s)
-	sheets.append(s)
+	pancake.append(s)
 
+func stack_sheet(s):
+	pancake.erase(s)
+	stacked_sheets.append(s)
+	s.stack_in_jr()
+	
+func scrap_sheets_until(s):
+	var idx = pancake.find(s) + 1
+	
+	for sheet in pancake.slice(0, idx):
+		sheet.scrap()
+	
+	scrapped_sheets.append_array(pancake.slice(0, idx))
+	pancake = pancake.slice(idx)
+	
 func _on_ok_cut_detected(triggered_sheet):
 	print("ok cut")
-	var i = 0
-	for s in sheets:
-		i += 1
-		if s == triggered_sheet:
-			s.stack_in_jr()
-			sheets = sheets.slice(i)
-			break
-			
-		s.trigger_fall()
+	if pancake[0] == triggered_sheet:
+		stack_sheet(pancake[0])
+		return
+	
+	scrap_sheets_until(triggered_sheet)
 
 func _on_ng_cut_detected(triggered_sheet):
 	print("ng cut")
-	for s in sheets:
-		s.trigger_fall()
-		
-		if s == triggered_sheet:
-			return
-	
-func drop_sheets(triggered_sheet):
-	for s in sheets:
-		s.trigger_fall()
-		
-		if s == triggered_sheet:
-			return
+	scrap_sheets_until(triggered_sheet)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # Handle resetting sheets when reaching the right screen boundary
 func _process(delta: float) -> void:
 	# Remove sheets that move off-screen to the right
-	for s in sheets:
-		if s.position.x > screen_width + sheet_spacing:
-			remove_sheet(s)
+	for sheet in pancake:
+		if sheet.position.x > screen_width + sheet_spacing:
+			pancake.erase(sheet)
+			sheet.queue_free()
+	
+	for sheet in scrapped_sheets:
+		if sheet.position.y > screen_height + sheet_spacing:
+			scrapped_sheets.erase(sheet)
+			sheet.queue_free()
 
 func remove_sheet(s):
-	sheets.erase(s)
+	pancake.erase(s)
 	s.queue_free()
 
 # Debug
