@@ -14,8 +14,8 @@ var pancake = []
 var stacked_sheets = []
 var scrapped_sheets = []
 
-var ok_cut_timestamps = []
-var ng_cut_timestamps = []
+var ok_timestamps = []
+var ng_timestamps = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,14 +53,14 @@ func stack_sheet(s):
 	stacked_sheets.append(s)
 	s.stack_in_jr()
 	
-	ok_cut_timestamps.append(Time.get_ticks_msec())
+	ok_timestamps.append(Time.get_ticks_msec())
 	
 func scrap_sheets_until(s):
 	var idx = pancake.find(s) + 1
 	
 	for sheet in pancake.slice(0, idx):
 		sheet.scrap()
-		ng_cut_timestamps.append(Time.get_ticks_msec())
+		ng_timestamps.append(Time.get_ticks_msec())
 	
 	scrapped_sheets.append_array(pancake.slice(0, idx))
 	pancake = pancake.slice(idx)
@@ -100,6 +100,8 @@ func _process(delta: float) -> void:
 		if sheet.position.x > screen_width + sheet_spacing:
 			pancake.erase(sheet)
 			sheet.queue_free()
+			ng_timestamps.append(Time.get_ticks_msec()) # You missed the opportunity - NG material
+			
 	
 	for sheet in scrapped_sheets:
 		if sheet.position.y > screen_height + sheet_spacing:
@@ -115,18 +117,18 @@ func update_scores():
 	
 	var sample_seconds = 10
 	
-	ok_cut_timestamps = ok_cut_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
-	ng_cut_timestamps = ng_cut_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
+	ok_timestamps = ok_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
+	ng_timestamps = ng_timestamps.filter(func(timestamp): return current_time - timestamp <= sample_seconds * 1000)
 	
 	var yield_pct = 0.0
 	
-	var ok_cuts = len(ok_cut_timestamps)
-	var ng_cuts = len(ng_cut_timestamps)
-	if ok_cuts + ng_cuts > 0:
-		yield_pct = float(ok_cuts) / (ok_cuts + ng_cuts) * 100
+	var oks = len(ok_timestamps)
+	var ngs = len(ng_timestamps)
+	if oks + ngs > 0:
+		yield_pct = float(oks) / (oks + ngs) * 100
 	
 	var ppm = 0
-	ppm = ok_cuts * 60 / sample_seconds / stack_capacity
+	ppm = oks * 60 / sample_seconds / stack_capacity
 	
 	$CanvasLayer/ScoreLabel.text = "Yield: %d%%\nPPM: %d" % [yield_pct, ppm]
 	
