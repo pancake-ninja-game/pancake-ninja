@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://lvrfvxfmxneo"]
+[gd_scene load_steps=10 format=3 uid="uid://lvrfvxfmxneo"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hkq3k"]
 [ext_resource type="PackedScene" uid="uid://b8yc4mkdfxrwt" path="res://scenes/sheet.tscn" id="2_31blm"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bnihv27jghrgt" path="res://assets/operator_idle.png" id="5_eob18"]
 [ext_resource type="Texture2D" uid="uid://dyqwd3ge2rlqb" path="res://assets/operator_walking.png" id="6_udd42"]
 [ext_resource type="Texture2D" uid="uid://bpkc68pyfqjii" path="res://assets/operator_cutting.png" id="7_b53us"]
+[ext_resource type="FontFile" uid="uid://cmdlcefh00pig" path="res://assets/ka1.ttf" id="9_36nuu"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_hkq3k")
@@ -59,15 +60,16 @@ offset_bottom = 734.0
 color = Color(0.59, 0.59, 0.59, 0.509804)
 
 [node name="TitleLabel" type="Label" parent="StartScreen"]
-offset_left = 211.0
+offset_left = 153.0
 offset_top = 169.0
-offset_right = 964.0
-offset_bottom = 484.0
+offset_right = 779.0
+offset_bottom = 472.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_0oxkk")
+theme_override_fonts/font = ExtResource("9_36nuu")
 theme_override_font_sizes/font_size = 90
 text = "Pancake
-.Ninja"
+Ninja"
+horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="StartScreen"]
 offset_left = 401.0
