@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://lvrfvxfmxneo"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_hkq3k"]
+[ext_resource type="PackedScene" uid="uid://b8yc4mkdfxrwt" path="res://scenes/sheet.tscn" id="2_31blm"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_hkq3k")
+sheet_scene = ExtResource("2_31blm")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
