@@ -39,6 +39,9 @@ func spawn_sheet():
 	pancake.append(s)
 
 func stack_sheet(s):
+	if stacked_sheets.size() == 10:
+		flush_stacked_sheets()
+		
 	pancake.erase(s)
 	stacked_sheets.append(s)
 	s.stack_in_jr()
@@ -51,6 +54,19 @@ func scrap_sheets_until(s):
 	
 	scrapped_sheets.append_array(pancake.slice(0, idx))
 	pancake = pancake.slice(idx)
+	
+func flush_stacked_sheets():
+	for sheet in stacked_sheets:
+		sheet.queue_free()
+		
+	stacked_sheets.clear()
+	
+	# Reset stack height
+	# Any better way to do this?
+	if sheet_scene:
+		var tmp_sheet = sheet_scene.instantiate()
+		tmp_sheet.reset_jr_height()
+		tmp_sheet.queue_free()
 	
 func _on_ok_cut_detected(triggered_sheet):
 	print("ok cut")

@@ -107,3 +107,6 @@ func move_toward_jr(delta):
 		rotation = 0
 		skew_direction = 0
 		scale = Vector2(0.5, 0.5)
+
+func reset_jr_height():
+	jr_height = 0
