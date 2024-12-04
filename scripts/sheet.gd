@@ -1,15 +1,18 @@
 extends Node2D
 
+signal sheet_fall_triggered
+
 @export var move_speed: float = 200
 var sheet_width: float = 0
 
 var falling = false
-var fall_speed = 200
+var fall_speed = 0
 var gravity = 500
-var connected_sheets = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	connect("mouse_entered", Callable(self, "_on_mouse_entered"))
+	
 	var sprite = $Sprite2D
 	if sprite.texture:
 		sheet_width = sprite.texture.get_width()
@@ -19,18 +22,12 @@ func _process(delta):
 	position.x += move_speed * delta
 	
 	if falling:
-		position.y += fall_speed * delta
 		fall_speed += gravity * delta
-		for s in connected_sheets:
-			s.fall_speed = fall_speed
-			s.falling = true
+		position.y += fall_speed * delta
 
 func trigger_fall():
 	falling = true
-	for s in connected_sheets:
-		s.trigger_fall()
 
-
-func _input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.pressed:
-		trigger_fall()
+func _on_mouse_entered():
+	print("_on_mouse_entered!")
+	emit_signal("sheet_fall_triggered", self)

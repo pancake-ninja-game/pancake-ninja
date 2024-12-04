@@ -3,17 +3,15 @@
 [ext_resource type="Script" path="res://scripts/sheet.gd" id="1_iu12k"]
 [ext_resource type="Texture2D" uid="uid://xdyvmhsrq17" path="res://assets/sheet.png" id="2_kbd84"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_n5f84"]
-size = Vector2(160, 130)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_81t3h"]
+size = Vector2(241, 150)
 
-[node name="Node2D" type="Node2D"]
+[node name="Area2D" type="Area2D"]
 script = ExtResource("1_iu12k")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_kbd84")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Sprite2D"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/StaticBody2D"]
-position = Vector2(0, -15)
-shape = SubResource("RectangleShape2D_n5f84")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -15)
+shape = SubResource("RectangleShape2D_81t3h")

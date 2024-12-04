@@ -27,9 +27,17 @@ func _on_Timer_timeout():
 func spawn_sheet():
 	var s = sheet_scene.instantiate()
 	s.position = Vector2(-sheet_spacing, 100)
+	s.connect("sheet_fall_triggered", Callable(self, "_on_sheet_fall_triggered"))
 	add_child(s)
 	sheets.append(s)
+
+func _on_sheet_fall_triggered(triggered_sheet):
+	for s in sheets:
+		s.trigger_fall()
 		
+		if s == triggered_sheet:
+			return
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # Handle resetting sheets when reaching the right screen boundary
 func _process(delta: float) -> void:
@@ -41,3 +49,8 @@ func _process(delta: float) -> void:
 func remove_sheet(s):
 	sheets.erase(s)
 	s.queue_free()
+
+# Debug
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		print("Mouse clicked at: ", event.position)
