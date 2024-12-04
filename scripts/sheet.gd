@@ -79,8 +79,8 @@ func _on_mouse_exited():
 	evaluate_cut()
 	
 func evaluate_cut():
-	var left_boundary = -sheet_width * cut_zone
-	var right_boundary = sheet_width * cut_zone
+	var left_boundary = -sheet_width / 2
+	var right_boundary = -sheet_width / 2 + sheet_width * cut_zone
 	
 	for pos in mouse_positions:
 		if pos < left_boundary or pos > right_boundary:
