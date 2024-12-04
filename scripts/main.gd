@@ -4,7 +4,7 @@ extends Node2D
 @export var screen_width: float = 1280
 @export var screen_height: float = 720
 
-var pancake_y_pos = 370
+var pancake_y_pos = 400
 
 var sheet_spacing: float = 0
 var sheet_speed: float = 200
@@ -79,7 +79,8 @@ func flush_stacked_sheets():
 		tmp_sheet.queue_free()
 	
 func _on_ok_cut_detected(triggered_sheet):
-	print("ok cut")
+	$Operator.play_cutting_animation()
+	
 	if pancake[0] == triggered_sheet:
 		stack_sheet(pancake[0])
 		return
@@ -87,7 +88,7 @@ func _on_ok_cut_detected(triggered_sheet):
 	scrap_sheets_until(triggered_sheet)
 
 func _on_ng_cut_detected(triggered_sheet):
-	print("ng cut")
+	$Operator.play_cutting_animation()
 	scrap_sheets_until(triggered_sheet)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.

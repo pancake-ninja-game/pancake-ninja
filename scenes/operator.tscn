@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ktheoxfna7ep"]
+
+[ext_resource type="Script" path="res://scripts/operator.gd" id="1_qhaqu"]
+[ext_resource type="Texture2D" uid="uid://rf2xma5i5lbo" path="res://assets/operator.png" id="2_us6tp"]
+
+[node name="Operator" type="Node2D"]
+script = ExtResource("1_qhaqu")
+sprite_idle = ExtResource("2_us6tp")
+sprite_walking = ExtResource("2_us6tp")
+sprite_walking_alt = ExtResource("2_us6tp")
+sprite_cutting = ExtResource("2_us6tp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
