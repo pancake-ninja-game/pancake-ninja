@@ -3,7 +3,7 @@ extends Node2D
 signal ok_cut_detected
 signal ng_cut_detected
 
-@export var move_speed: float = 200
+@export var move_speed: float = 400
 @export var gravity: float = 2000
 @export var rotation_speed: float = 10
 @export var skew_speed: float = 3

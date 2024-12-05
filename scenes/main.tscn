@@ -32,6 +32,7 @@ parameters/looping = false
 
 [node name="FlushStackSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_443fb")
+volume_db = 5.943
 
 [node name="GameLayer" type="Node2D" parent="."]
 
