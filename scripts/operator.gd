@@ -45,7 +45,11 @@ func _process(delta: float) -> void:
 		$Sprite2D.texture = sprite_idle
 
 func play_cutting_animation():
+	if is_cutting:
+		return
+		
 	is_cutting = true
+	$CutSound.play()
 	$Sprite2D.texture = sprite_cutting
 	await get_tree().create_timer(0.2).timeout
 	is_cutting = false

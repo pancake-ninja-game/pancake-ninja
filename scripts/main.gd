@@ -160,7 +160,6 @@ func flush_stacked_sheets():
 		tmp_sheet.queue_free()
 	
 func _on_ok_cut_detected(triggered_sheet):
-	$CutSound.play()
 	$GameLayer/Operator.play_cutting_animation()
 	
 	if pancake[0] == triggered_sheet:
@@ -170,7 +169,6 @@ func _on_ok_cut_detected(triggered_sheet):
 	scrap_sheets_until(triggered_sheet)
 
 func _on_ng_cut_detected(triggered_sheet):
-	$CutSound.play()
 	$GameLayer/Operator.play_cutting_animation()
 	scrap_sheets_until(triggered_sheet)
 	
@@ -181,6 +179,14 @@ func _process(delta: float) -> void:
 		return
 		
 	update_scores()
+	
+	# Make it possible to cut when no sheet is nearby
+	# This probably initiates a _lot_ of cutting animation
+	# requests. Let's see how performance is affected.
+	var mouse_pos = get_global_mouse_position()
+	if abs(mouse_pos.y - pancake_y_pos) <= 30:
+		$GameLayer/Operator.play_cutting_animation()
+	
 	
 	# Remove sheets that move off-screen to the right
 	for sheet in pancake:

@@ -31,10 +31,6 @@ stream = ExtResource("4_op14f")
 volume_db = 3.962
 parameters/looping = false
 
-[node name="CutSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_674r5")
-volume_db = 4.457
-
 [node name="FlushStackSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_443fb")
 
@@ -63,6 +59,11 @@ sprite_idle = ExtResource("5_eob18")
 sprite_walking = ExtResource("6_udd42")
 sprite_walking_alt = ExtResource("5_eob18")
 sprite_cutting = ExtResource("7_b53us")
+
+[node name="CutSound" type="AudioStreamPlayer2D" parent="GameLayer/Operator"]
+position = Vector2(0, -320)
+stream = ExtResource("5_674r5")
+volume_db = 4.457
 
 [node name="CanvasLayer" type="CanvasLayer" parent="GameLayer"]
 
