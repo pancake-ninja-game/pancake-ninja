@@ -1,0 +1,22 @@
+name: Publish web export
+
+on:
+  push:
+    branch: main
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Publish web export to gh-pages branch
+        uses: rayluo/github-pages-overwriter@v1.3
+
+        with:
+          source-directory: export/web/
+          target-branch: gh-pages
+
