@@ -30,16 +30,16 @@ func _process(delta: float) -> void:
 	var target_x = get_global_mouse_position().x
 	var diff_x = target_x - position.x
 	
-	if abs(diff_x) > 250:
+	# Flip sprite if direction changes
+	var direction = sign(diff_x)
+	if direction != current_direction:
+		$Sprite2D.flip_h = direction < 0
+		current_direction = direction
+	
+	# Start walking if the operator is too far away from the mouse
+	if abs(diff_x) > 200:
 		is_walking = true
-		var direction = sign(diff_x)
 		position.x += direction * move_speed * delta
-		
-		# Flip sprite if direction changes
-		if direction != current_direction:
-			$Sprite2D.flip_h = direction < 0
-			current_direction = direction
-			
 	else:
 		is_walking = false
 		$Sprite2D.texture = sprite_idle
