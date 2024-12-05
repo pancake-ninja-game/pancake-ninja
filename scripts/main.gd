@@ -1,6 +1,6 @@
 extends Node2D
 
-var game_duration = 10
+var game_duration = 45
 var game_active = false
 var round_timer = 0
 
