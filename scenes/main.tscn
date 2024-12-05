@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://lvrfvxfmxneo"]
+[gd_scene load_steps=13 format=3 uid="uid://lvrfvxfmxneo"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hkq3k"]
 [ext_resource type="PackedScene" uid="uid://b8yc4mkdfxrwt" path="res://scenes/sheet.tscn" id="2_31blm"]
@@ -7,7 +7,6 @@
 [ext_resource type="FontFile" uid="uid://djtkfpxfy8ik1" path="res://assets/joystix monospace.otf" id="4_0oxkk"]
 [ext_resource type="AudioStream" uid="uid://baobi0wpuejlx" path="res://assets/chiptune-action-song-for-boss-fights-265979.mp3" id="4_op14f"]
 [ext_resource type="PackedScene" uid="uid://ktheoxfna7ep" path="res://scenes/operator.tscn" id="4_sjucg"]
-[ext_resource type="AudioStream" uid="uid://b47ixmnrdys0g" path="res://assets/sword-sound-2-36274.mp3" id="5_674r5"]
 [ext_resource type="Texture2D" uid="uid://bnihv27jghrgt" path="res://assets/operator_idle.png" id="5_eob18"]
 [ext_resource type="AudioStream" uid="uid://br73bgdoq5ctd" path="res://assets/8-bit-game-4-188106.mp3" id="6_443fb"]
 [ext_resource type="Texture2D" uid="uid://dyqwd3ge2rlqb" path="res://assets/operator_walking.png" id="6_udd42"]
@@ -60,11 +59,6 @@ sprite_walking = ExtResource("6_udd42")
 sprite_walking_alt = ExtResource("5_eob18")
 sprite_cutting = ExtResource("7_b53us")
 
-[node name="CutSound" type="AudioStreamPlayer2D" parent="GameLayer/Operator"]
-position = Vector2(0, -320)
-stream = ExtResource("5_674r5")
-volume_db = 4.457
-
 [node name="CanvasLayer" type="CanvasLayer" parent="GameLayer"]
 
 [node name="ScoreLabel" type="Label" parent="GameLayer/CanvasLayer"]
@@ -80,6 +74,13 @@ PPM: 0"
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="GameLayer"]
 
 [node name="StartScreen" type="CanvasLayer" parent="."]
+
+[node name="Operator" parent="StartScreen" instance=ExtResource("4_sjucg")]
+position = Vector2(0, 320)
+sprite_idle = ExtResource("5_eob18")
+sprite_walking = ExtResource("6_udd42")
+sprite_walking_alt = ExtResource("5_eob18")
+sprite_cutting = ExtResource("7_b53us")
 
 [node name="ColorRect" type="ColorRect" parent="StartScreen"]
 offset_right = 1296.0
@@ -108,6 +109,13 @@ theme_override_font_sizes/font_size = 53
 text = "Start Game"
 
 [node name="EndScreen" type="CanvasLayer" parent="."]
+
+[node name="Operator" parent="EndScreen" instance=ExtResource("4_sjucg")]
+position = Vector2(0, 320)
+sprite_idle = ExtResource("5_eob18")
+sprite_walking = ExtResource("6_udd42")
+sprite_walking_alt = ExtResource("5_eob18")
+sprite_cutting = ExtResource("7_b53us")
 
 [node name="ColorRect" type="ColorRect" parent="EndScreen"]
 offset_right = 1296.0
