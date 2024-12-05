@@ -1,6 +1,6 @@
 extends Node2D
 
-var game_duration = 45
+var game_duration = 30
 var game_active = false
 var round_timer = 0
 
@@ -11,7 +11,7 @@ var round_timer = 0
 var pancake_y_pos = 400
 
 var sheet_spacing: float = 0
-var sheet_speed: float = 200
+var sheet_speed: float = 300
 var stack_capacity = 5
 
 var pancake = []
