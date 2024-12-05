@@ -1,11 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://lvrfvxfmxneo"]
+[gd_scene load_steps=14 format=3 uid="uid://lvrfvxfmxneo"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hkq3k"]
 [ext_resource type="PackedScene" uid="uid://b8yc4mkdfxrwt" path="res://scenes/sheet.tscn" id="2_31blm"]
+[ext_resource type="AudioStream" uid="uid://cr75aw63ph0xd" path="res://assets/retro-game-arcade-236133.mp3" id="3_msxjf"]
 [ext_resource type="Texture2D" uid="uid://b6e3i48rq6l5v" path="res://assets/stacking.png" id="3_uemen"]
 [ext_resource type="FontFile" uid="uid://djtkfpxfy8ik1" path="res://assets/joystix monospace.otf" id="4_0oxkk"]
+[ext_resource type="AudioStream" uid="uid://baobi0wpuejlx" path="res://assets/chiptune-action-song-for-boss-fights-265979.mp3" id="4_op14f"]
 [ext_resource type="PackedScene" uid="uid://ktheoxfna7ep" path="res://scenes/operator.tscn" id="4_sjucg"]
+[ext_resource type="AudioStream" uid="uid://b47ixmnrdys0g" path="res://assets/sword-sound-2-36274.mp3" id="5_674r5"]
 [ext_resource type="Texture2D" uid="uid://bnihv27jghrgt" path="res://assets/operator_idle.png" id="5_eob18"]
+[ext_resource type="AudioStream" uid="uid://br73bgdoq5ctd" path="res://assets/8-bit-game-4-188106.mp3" id="6_443fb"]
 [ext_resource type="Texture2D" uid="uid://dyqwd3ge2rlqb" path="res://assets/operator_walking.png" id="6_udd42"]
 [ext_resource type="Texture2D" uid="uid://bpkc68pyfqjii" path="res://assets/operator_cutting.png" id="7_b53us"]
 [ext_resource type="FontFile" uid="uid://cmdlcefh00pig" path="res://assets/ka1.ttf" id="9_36nuu"]
@@ -13,6 +17,26 @@
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_hkq3k")
 sheet_scene = ExtResource("2_31blm")
+
+[node name="StartScreenMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_msxjf")
+parameters/looping = false
+
+[node name="EndScreenMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_msxjf")
+parameters/looping = false
+
+[node name="GameMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_op14f")
+volume_db = 3.962
+parameters/looping = false
+
+[node name="CutSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_674r5")
+volume_db = 4.457
+
+[node name="FlushStackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_443fb")
 
 [node name="GameLayer" type="Node2D" parent="."]
 
@@ -51,6 +75,8 @@ theme_override_fonts/font = ExtResource("4_0oxkk")
 theme_override_font_sizes/font_size = 31
 text = "Yield: 0%
 PPM: 0"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="GameLayer"]
 
 [node name="StartScreen" type="CanvasLayer" parent="."]
 

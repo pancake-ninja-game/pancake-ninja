@@ -38,7 +38,15 @@ func _ready() -> void:
 	
 	show_start_screen()
 
+func stop_all_music():
+	$StartScreenMusic.stop()
+	$EndScreenMusic.stop()
+	$GameMusic.stop()
+	
 func show_start_screen():
+	stop_all_music()
+	$StartScreenMusic.play()
+	
 	$StartScreen.visible = true
 	$EndScreen.visible = false
 	$GameLayer.visible = true
@@ -46,6 +54,9 @@ func show_start_screen():
 	$GameLayer/Operator.visible = false
 	
 func start_game():
+	stop_all_music()
+	$GameMusic.play()
+	
 	$StartScreen.visible = false
 	$EndScreen.visible = false
 	$GameLayer/CanvasLayer.visible = true
@@ -57,6 +68,9 @@ func start_game():
 	$GameLayer/RoundTimer.start()
 
 func end_game():
+	stop_all_music()
+	$EndScreenMusic.play()
+	
 	print("game ended")
 	for s in pancake:
 		s.visible = false
@@ -113,6 +127,7 @@ func spawn_sheet():
 
 func stack_sheet(s):
 	if stacked_sheets.size() == stack_capacity:
+		$FlushStackSound.play()
 		flush_stacked_sheets()
 		
 	pancake.erase(s)
@@ -145,6 +160,7 @@ func flush_stacked_sheets():
 		tmp_sheet.queue_free()
 	
 func _on_ok_cut_detected(triggered_sheet):
+	$CutSound.play()
 	$GameLayer/Operator.play_cutting_animation()
 	
 	if pancake[0] == triggered_sheet:
@@ -154,6 +170,7 @@ func _on_ok_cut_detected(triggered_sheet):
 	scrap_sheets_until(triggered_sheet)
 
 func _on_ng_cut_detected(triggered_sheet):
+	$CutSound.play()
 	$GameLayer/Operator.play_cutting_animation()
 	scrap_sheets_until(triggered_sheet)
 	
