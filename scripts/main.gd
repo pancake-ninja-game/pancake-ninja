@@ -12,7 +12,7 @@ var pancake_y_pos = 400
 
 var sheet_spacing: float = 0
 var sheet_speed: float = 200
-var stack_capacity = 6
+var stack_capacity = 5
 
 var pancake = []
 var stacked_sheets = []

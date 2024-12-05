@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var move_speed: float = 50
+@export var move_speed: float = 150
 @export var sprite_idle: Texture2D
 @export var sprite_walking: Texture2D
 @export var sprite_walking_alt: Texture2D
@@ -16,7 +16,7 @@ func _ready() -> void:
 	$Sprite2D.texture = sprite_idle
 	
 	var walk_timer = Timer.new()
-	walk_timer.wait_time = 0.4
+	walk_timer.wait_time = 0.15
 	walk_timer.one_shot = false
 	walk_timer.autostart = true
 	walk_timer.connect("timeout", Callable(self, "_on_walk_timer_timeout"))
