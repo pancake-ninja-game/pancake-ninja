@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkgwyyucm0gul"]
+
+[ext_resource type="Script" path="res://round_timer/round_timer.gd" id="1_qaaum"]
+[ext_resource type="Theme" uid="uid://d1sy710vkffyc" path="res://theme.tres" id="1_u03n3"]
+
+[node name="RoundTimer" type="Node2D"]
+script = ExtResource("1_qaaum")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_u03n3")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "45"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

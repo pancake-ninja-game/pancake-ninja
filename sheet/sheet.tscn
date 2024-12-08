@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://fraydmjrfyid"]
+
+[ext_resource type="Script" path="res://sheet/sheet.gd" id="1_6gtaq"]
+[ext_resource type="Texture2D" uid="uid://cogssn8v8u1hu" path="res://sheet/sheet.png" id="1_sm6wl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sv241"]
+size = Vector2(80, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g5hx2"]
+size = Vector2(80, 220)
+
+[node name="Sheet" type="Area2D"]
+script = ExtResource("1_6gtaq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_sm6wl")
+
+[node name="OkArea" type="CollisionShape2D" parent="."]
+position = Vector2(-80, -10)
+shape = SubResource("RectangleShape2D_sv241")
+debug_color = Color(0, 0.634914, 0.423446, 0.42)
+
+[node name="NgArea" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_g5hx2")
+debug_color = Color(0.996425, 0, 0.188427, 0.42)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_shape_entered" from="." to="." method="_on_mouse_shape_entered"]

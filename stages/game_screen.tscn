@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1bij0m8wl8ef"]
+
+[ext_resource type="Script" path="res://game_screen.gd" id="1_2hmcs"]
+[ext_resource type="PackedScene" uid="uid://bkgwyyucm0gul" path="res://round_timer/round_timer.tscn" id="2_4a2is"]
+[ext_resource type="PackedScene" uid="uid://f1mqnvqch0um" path="res://stack/stack.tscn" id="3_3oako"]
+[ext_resource type="Script" path="res://scoreboard.gd" id="4_8nvwy"]
+[ext_resource type="Theme" uid="uid://d1sy710vkffyc" path="res://theme.tres" id="5_ulntx"]
+
+[node name="GameScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2hmcs")
+
+[node name="SheetSpawnTimer" type="Timer" parent="."]
+
+[node name="RoundTimer" parent="." instance=ExtResource("2_4a2is")]
+position = Vector2(30, 10)
+
+[node name="Stack" parent="." instance=ExtResource("3_3oako")]
+position = Vector2(1010, 550)
+
+[node name="Scoreboard" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 812.0
+offset_top = 130.0
+offset_right = 852.0
+offset_bottom = 170.0
+script = ExtResource("4_8nvwy")
+
+[node name="Label" type="Label" parent="Scoreboard"]
+layout_mode = 0
+offset_left = -29.0
+offset_top = -7.0
+offset_right = 244.0
+offset_bottom = 68.0
+theme = ExtResource("5_ulntx")
+theme_override_font_sizes/font_size = 25
+text = "Yield: 0%
+PPM: 0"
