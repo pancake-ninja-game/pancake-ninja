@@ -6,6 +6,7 @@ signal game_ended
 signal reset_state_requested
 
 const DEFAULT_LINE_SPEED: int = 200
+var line_speeds: Array[int] = [200, 300, 350]
 
 var is_playing: bool = false
 var line_speed: float
@@ -147,3 +148,7 @@ func _on_round_timer_timeout() -> void:
 		return
 	
 	end_game()
+
+
+func _on_round_timer_level_change_requested(level_index: int) -> void:
+	set_line_speed(line_speeds[level_index])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b3l14vb23todi"]
+[gd_scene load_steps=15 format=3 uid="uid://b3l14vb23todi"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_cp1wt"]
 [ext_resource type="Script" path="res://game_screen.gd" id="1_hupoq"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://bgolyal6d6cem" path="res://chiptune-action-song-for-boss-fights-265979.mp3" id="6_xrdba"]
 [ext_resource type="Script" path="res://end_screen.gd" id="10_we75j"]
 [ext_resource type="AudioStream" uid="uid://7uvt4e55d3m1" path="res://retro-game-arcade-236133.mp3" id="11_tcasj"]
+[ext_resource type="Texture2D" uid="uid://cogssn8v8u1hu" path="res://sheet/sheet.png" id="14_lw4sr"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_cp1wt")
@@ -37,6 +38,7 @@ volume_db = 5.0
 stream = ExtResource("11_tcasj")
 
 [node name="GameScreen" type="CanvasLayer" parent="."]
+visible = false
 script = ExtResource("1_hupoq")
 
 [node name="SheetSpawnTimer" type="Timer" parent="GameScreen"]
@@ -56,16 +58,27 @@ offset_right = 852.0
 offset_bottom = 170.0
 script = ExtResource("6_x31ci")
 
-[node name="Label" type="Label" parent="GameScreen/Scoreboard"]
+[node name="Score" type="Label" parent="GameScreen/Scoreboard"]
 layout_mode = 0
 offset_left = -29.0
-offset_top = -7.0
+offset_top = -25.0
 offset_right = 244.0
-offset_bottom = 68.0
+offset_bottom = 50.0
 theme = ExtResource("3_8c0d6")
 theme_override_font_sizes/font_size = 25
 text = "Yield: 0%
 PPM: 0"
+
+[node name="Level" type="Label" parent="GameScreen/Scoreboard"]
+layout_mode = 0
+offset_left = -29.0
+offset_top = 60.0
+offset_right = 282.0
+offset_bottom = 123.0
+theme = ExtResource("3_8c0d6")
+theme_override_font_sizes/font_size = 25
+text = "Level:
+Beginner"
 
 [node name="StartScreen" type="CanvasLayer" parent="."]
 visible = false
@@ -144,6 +157,57 @@ grow_vertical = 0
 theme = ExtResource("3_8c0d6")
 text = "Play Again"
 
+[node name="Instruction screen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Instruction screen"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 0.52549)
+
+[node name="FinalScore" type="Label" parent="Instruction screen"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -516.0
+offset_top = 50.0
+offset_right = 478.0
+offset_bottom = 251.0
+grow_horizontal = 2
+theme = ExtResource("3_8c0d6")
+text = "Dragging your mouse or finger
+through the pancake inside
+the green zone"
+
+[node name="StartGame" type="Button" parent="Instruction screen"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -258.0
+offset_top = -185.0
+offset_right = 259.0
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_8c0d6")
+text = "Ok, let's go!"
+
+[node name="Sprite2D" type="Sprite2D" parent="Instruction screen"]
+position = Vector2(52, 420)
+texture = ExtResource("14_lw4sr")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Instruction screen"]
+position = Vector2(211, 420)
+texture = ExtResource("14_lw4sr")
+
+[node name="Line2D" type="Line2D" parent="Instruction screen"]
+position = Vector2(137, 299)
+scale = Vector2(6.52301, 1.00649)
+points = PackedVector2Array(0, 0, 0, 220)
+default_color = Color(0, 1, 0.583333, 0.458824)
+
 [connection signal="game_ended" from="." to="GameScreen" method="_on_main_game_ended"]
 [connection signal="game_ended" from="." to="GameScreen/RoundTimer" method="_on_main_game_ended"]
 [connection signal="game_started" from="." to="ScoreManager" method="_on_main_game_started"]
@@ -151,11 +215,15 @@ text = "Play Again"
 [connection signal="game_started" from="." to="GameScreen/RoundTimer" method="_on_game_started"]
 [connection signal="game_started" from="." to="GameScreen/RoundTimer" method="_on_main_game_started"]
 [connection signal="game_started" from="." to="GameScreen/Stack" method="_on_main_game_started"]
+[connection signal="reset_state_requested" from="." to="GameScreen/Scoreboard" method="_on_main_reset_state_requested"]
 [connection signal="score_changed" from="ScoreManager" to="GameScreen/Scoreboard" method="_on_score_changed"]
 [connection signal="score_changed" from="ScoreManager" to="EndScreen" method="_on_score_changed"]
 [connection signal="timeout" from="GameScreen/SheetSpawnTimer" to="." method="_on_sheet_spawn_timer_timeout"]
+[connection signal="level_change_requested" from="GameScreen/RoundTimer" to="." method="_on_round_timer_level_change_requested"]
+[connection signal="level_change_requested" from="GameScreen/RoundTimer" to="GameScreen/Scoreboard" method="_on_round_timer_level_change_requested"]
 [connection signal="tick" from="GameScreen/RoundTimer" to="ScoreManager" method="_on_round_timer_tick"]
 [connection signal="timeout" from="GameScreen/RoundTimer" to="." method="_on_round_timer_timeout"]
 [connection signal="stack_completed" from="GameScreen/Stack" to="ScoreManager" method="_on_stack_completed"]
 [connection signal="pressed" from="StartScreen/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="EndScreen/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="Instruction screen/StartGame" to="." method="_on_start_game_pressed"]

@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://f1mqnvqch0um"]
+[gd_scene load_steps=4 format=3 uid="uid://f1mqnvqch0um"]
 
 [ext_resource type="Script" path="res://stack/stack.gd" id="1_m680o"]
 [ext_resource type="AudioStream" uid="uid://dp84kctw64ep7" path="res://8-bit-game-4-188106.mp3" id="2_lwfq8"]
+[ext_resource type="AudioStream" uid="uid://ba50b1jhsu6xo" path="res://8-bit-game-7-188104.mp3" id="2_vlu5g"]
 
 [node name="Stack" type="Node2D"]
 script = ExtResource("1_m680o")
+
+[node name="SheetStackedSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_vlu5g")
+volume_db = -3.0
 
 [node name="StackCompletedSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_lwfq8")

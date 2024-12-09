@@ -3,8 +3,8 @@ extends Node2D
 
 signal timeout
 signal tick(time_passed: int)
+signal level_change_requested(level_index: int)
 
-const ROUND_LENGTH: int = 15
 var time_left: int
 
 @onready var timer: Timer = $Timer
@@ -16,7 +16,7 @@ func _ready() -> void:
 
 
 func reset() -> void:
-	time_left = ROUND_LENGTH
+	time_left = globals.ROUND_LENGTH
 	update_label()
 
 
@@ -33,7 +33,7 @@ func update_label() -> void:
 
 
 func emit_tick() -> void:
-	var t: int = ROUND_LENGTH - time_left
+	var t: int = globals.ROUND_LENGTH - time_left
 	tick.emit(t)
 
 
@@ -42,11 +42,14 @@ func _on_timer_timeout() -> void:
 	update_label()
 	emit_tick()
 	
-	if time_left > 0:
+	if time_left == 0:
+		timeout.emit()
+		timer.stop()
 		return
-	
-	timeout.emit()
-	timer.stop()
+		
+	if time_left % (globals.ROUND_LENGTH / globals.LEVELS) == 0:
+		var next: int = (globals.ROUND_LENGTH - time_left) / (globals.ROUND_LENGTH / globals.LEVELS)
+		level_change_requested.emit(next)
 
 
 func _on_main_game_started() -> void:

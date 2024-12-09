@@ -8,6 +8,7 @@ const SHEET_SPACING: int = 5
 	
 var sheets: Array[SheetScene] = []
 
+@onready var sheet_stacked_sound: AudioStreamPlayer2D = $SheetStackedSound
 @onready var stack_completed_sound: AudioStreamPlayer2D = $StackCompletedSound
 
 
@@ -20,6 +21,8 @@ func stack_sheet(sheet: SheetScene) -> void:
 		empty()
 		stack_completed_sound.play()
 		stack_completed.emit()
+	else:
+		sheet_stacked_sound.play()
 		
 	sheets.append(sheet)
 	sheet.reparent(self)
